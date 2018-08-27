@@ -3,11 +3,25 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
 
 public class LinkedinLoginTest {
+    WebDriver driver;
+
+    @BeforeMethod
+    public void beforeMethod() {
+        driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com/");
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        driver.quit();
+    }
 
     @Test
     public void successfulLoginTest() {
@@ -18,59 +32,25 @@ public class LinkedinLoginTest {
         //Click on 'Sign in' button.
         //Verify Home page is loaded.
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.linkedin.com/",
-                "Login page URL is wrong.");
-        Assert.assertEquals(driver.getTitle(), "LinkedIn: Log In or Sign Up",
-                "Login page Title is wrong.");
-
-        WebElement userEmailField = driver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = driver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = driver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        Assert.assertTrue(signInButton.isDisplayed(),
-                "signIn button is not displayed on Login page.");
-
-        userEmailField.sendKeys("linkedin.tst.yanina@gmail.com");
-        userPasswordField.sendKeys("Yanina123");
-        signInButton.click();
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
+        linkedinLoginPage.login("linkedin.tst.yanina@gmail.com", "Yanina123");
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.linkedin.com/feed/",
                 "Home page URL is wrong.");
         Assert.assertEquals(driver.getTitle(), "LinkedIn",
                 "Home page Title is wrong.");
-
         WebElement profileNavItem = driver.findElement(By.xpath("//li[@id='profile-nav-item']"));
+
         Assert.assertTrue(profileNavItem.isDisplayed(),
                 "profileNavItem button is not displayed on Home page.");
     }
 
     @Test
     public void negativeLoginTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.linkedin.com/",
-                "Login page URL is wrong.");
-        Assert.assertEquals(driver.getTitle(), "LinkedIn: Log In or Sign Up",
-                "Login page Title is wrong.");
-
-        WebElement userEmailField = driver.findElement(By.xpath("//input[@id='login-email']"));
-        WebElement userPasswordField = driver.findElement(By.xpath("//input[@id='login-password']"));
-        WebElement signInButton = driver.findElement(By.xpath("//input[@id='login-submit']"));
-
-        Assert.assertTrue(signInButton.isDisplayed(),
-                "signIn button is not displayed on Login page.");
-
-        userEmailField.sendKeys("a@b.c");
-        userPasswordField.sendKeys("wrong");
-        signInButton.click();
-
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
+        linkedinLoginPage.login("a@b.c", "wrong");
 
         WebElement alertMessage = driver.findElement(By.xpath("//div[@role='alert']"));
         Assert.assertEquals(alertMessage.getText(),
