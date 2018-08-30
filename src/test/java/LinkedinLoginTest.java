@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
@@ -23,8 +24,16 @@ public class LinkedinLoginTest {
         driver.quit();
     }
 
-    @Test
-    public void successfulLoginTest() {
+    @DataProvider
+    public Object[][] validDataProvider() {
+        return new Object[][]{
+                { "linkedin.tst.yanina@gmail.com", "Mykola123" },
+                { "linkedin.TST.yanina@gmail.com", "Mykola123" }
+        };
+    }
+
+    @Test(dataProvider = "validDataProvider")
+    public void successfulLoginTest(String userEmail, String userPassword) {
         //navigate to linkedin.com
         //Verify that login page is loaded.
         //Enter userEmail.
@@ -33,17 +42,21 @@ public class LinkedinLoginTest {
         //Verify Home page is loaded.
 
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
+
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
-        linkedinLoginPage.login("linkedin.tst.yanina@gmail.com", "Yanina123");
+        LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(userEmail, userPassword);
 
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.linkedin.com/feed/",
-                "Home page URL is wrong.");
-        Assert.assertEquals(driver.getTitle(), "LinkedIn",
-                "Home page Title is wrong.");
-        WebElement profileNavItem = driver.findElement(By.xpath("//li[@id='profile-nav-item']"));
+        Assert.assertTrue(linkedinHomePage.isPageLoaded(), "Home page is not loaded.");
+    }
 
-        Assert.assertTrue(profileNavItem.isDisplayed(),
-                "profileNavItem button is not displayed on Home page.");
+    @Test
+    public void emptyUserEmailAndUserPasswordTest() {
+        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
+
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
+        linkedinLoginPage = linkedinLoginPage.login("", "");
+
+        Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
     }
 
     @Test
