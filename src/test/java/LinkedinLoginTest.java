@@ -59,17 +59,30 @@ public class LinkedinLoginTest {
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
     }
 
-    @Test
-    public void negativeLoginTest() {
+
+    @DataProvider
+    public Object[][] invalidDataProvider() {
+        return new Object[][]{
+                { "a@b.c", "wrong", "Please enter a valid email address.", "The password you provided must have at least 6 characters."},
+        };
+    }
+
+    @Test(dataProvider = "invalidDataProvider")
+    public void negativeLoginTest(String userEmail, String userPassword, String userEmailError, String userPasswordError) {
         LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
-        linkedinLoginPage.login("a@b.c", "wrong");
+        LinkedinLoginSubmitPage linkedinLoginSubmitPage = linkedinLoginPage.login(userEmail, userPassword);
 
-        WebElement alertMessage = driver.findElement(By.xpath("//div[@role='alert']"));
-        Assert.assertEquals(alertMessage.getText(),
-                "There were one or more errors in your submission. Please correct the marked fields below.",
+        Assert.assertTrue(linkedinLoginSubmitPage.isPageLoaded(), "LoginSubmitPage is not loaded.");
+
+        Assert.assertEquals(linkedinLoginSubmitPage.getAlertMessageText(), "There were one or more errors in your submission. Please correct the marked fields below.",
                 "Alert message text is wrong.");
 
+        Assert.assertEquals(linkedinLoginSubmitPage.getUserEmailAlertText(), userEmailError,
+                "userEmail alert text is wrong.");
+
+        Assert.assertEquals(linkedinLoginSubmitPage.getUserPasswordAlertText(), userPasswordError,
+                "userPassword alert text is wrong.");
 
     }
 }
