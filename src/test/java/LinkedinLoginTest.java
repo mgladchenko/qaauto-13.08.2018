@@ -1,6 +1,4 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -8,15 +6,16 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static java.lang.Thread.sleep;
 
 public class LinkedinLoginTest {
     WebDriver driver;
+    LinkedinLoginPage linkedinLoginPage;
 
     @BeforeMethod
     public void beforeMethod() {
         driver = new ChromeDriver();
         driver.get("https://www.linkedin.com/");
+        linkedinLoginPage = new LinkedinLoginPage(driver);
     }
 
     @AfterMethod
@@ -41,8 +40,6 @@ public class LinkedinLoginTest {
         //Click on 'Sign in' button.
         //Verify Home page is loaded.
 
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
-
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
         LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(userEmail, userPassword);
 
@@ -51,8 +48,6 @@ public class LinkedinLoginTest {
 
     @Test
     public void emptyUserEmailAndUserPasswordTest() {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
-
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
         linkedinLoginPage = linkedinLoginPage.login("", "");
 
@@ -69,7 +64,6 @@ public class LinkedinLoginTest {
 
     @Test(dataProvider = "invalidDataProvider")
     public void negativeLoginTest(String userEmail, String userPassword, String userEmailError, String userPasswordError) {
-        LinkedinLoginPage linkedinLoginPage = new LinkedinLoginPage(driver);
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
         LinkedinLoginSubmitPage linkedinLoginSubmitPage = linkedinLoginPage.login(userEmail, userPassword);
 

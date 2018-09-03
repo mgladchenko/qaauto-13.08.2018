@@ -1,4 +1,3 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -6,9 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import static java.lang.Thread.sleep;
 
-public class LinkedinLoginPage {
-
-    private WebDriver driver;
+public class LinkedinLoginPage extends LinkedinBasePage {
 
     @FindBy(xpath = "//input[@id='login-email']")
     private WebElement userEmailField;
@@ -42,14 +39,6 @@ public class LinkedinLoginPage {
         else {
             return (T) this;
         }
-    }
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    public String getCurrentTitle() {
-        return driver.getTitle();
     }
 
     public boolean isPageLoaded() {

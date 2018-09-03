@@ -3,9 +3,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LinkedinLoginSubmitPage {
-    private WebDriver driver;
-
+public class LinkedinLoginSubmitPage extends LinkedinBasePage {
     @FindBy(xpath = "//div[@role='alert']")
     private WebElement alertMessage;
 
@@ -15,19 +13,9 @@ public class LinkedinLoginSubmitPage {
     @FindBy(xpath = "//*[@id='session_password-login-error']")
     private WebElement userPasswordAlert;
 
-
-
     public LinkedinLoginSubmitPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-    }
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    public String getCurrentTitle() {
-        return driver.getTitle();
     }
 
     public boolean isPageLoaded() {
