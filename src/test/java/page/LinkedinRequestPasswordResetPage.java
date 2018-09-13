@@ -26,19 +26,10 @@ public class LinkedinRequestPasswordResetPage extends LinkedinBasePage {
     }
 
     public LinkedinPasswordResetSubmitPage findAccount(String userEmail) {
-        GMailService gMailService = new GMailService();
         gMailService.connect();
 
         userEmailField.sendKeys(userEmail);
         findAccountButton.click();
-        //ToDo:
-        String messageSubject = "here's the link to reset your password";
-        String messageTo = "linkedin.tst.yanina@gmail.com";
-        String messageFrom = "security-noreply@linkedin.com";
-
-
-        String message = gMailService.waitMessage(messageSubject, messageTo, messageFrom, 180);
-        System.out.println("Content: " + message);
 
         return new LinkedinPasswordResetSubmitPage(driver);
     }

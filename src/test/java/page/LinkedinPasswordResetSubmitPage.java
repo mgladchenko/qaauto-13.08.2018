@@ -1,5 +1,6 @@
 package page;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,6 +29,22 @@ public class LinkedinPasswordResetSubmitPage extends LinkedinBasePage {
     }
 
     public LinkedinSetNewPasswordPage navigateToLinkFromEmail() {
+        String messageSubject = "here's the link to reset your password";
+        String messageTo = "linkedin.tst.yanina@gmail.com";
+        String messageFrom = "security-noreply@linkedin.com";
+
+        String message = gMailService.waitMessage(messageSubject, messageTo, messageFrom, 180);
+        System.out.println("Content: " + message);
+
+        String resetPasswordLink =
+                StringUtils.substringBetween(message,
+                        "To change your LinkedIn password, click <a href=\"",
+                        "\" style").replace("amp;","");
+
+        System.out.println(resetPasswordLink);
+        driver.get(resetPasswordLink);
+
+
         //ToDO:
         return new LinkedinSetNewPasswordPage(driver);
     }
