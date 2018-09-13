@@ -17,15 +17,22 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
         };
     }
 
+    /**
+     * Verify successful user Login.
+     *
+     * Preconditions:
+     * - Open new browser.
+     * - Navigate to linkedin.com
+     *
+     * Scenario:
+     * - Verify that login page is loaded.
+     * - Enter userEmail.
+     * - Enter userPassword.
+     * - Click on 'Sign in' button.
+     * - Verify Home page is loaded.
+     */
     @Test(dataProvider = "validDataProvider")
     public void successfulLoginTest(String userEmail, String userPassword) {
-        //navigate to linkedin.com
-        //Verify that login page is loaded.
-        //Enter userEmail.
-        //Enter userPassword.
-        //Click on 'Sign in' button.
-        //Verify Home page is loaded.
-
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
         LinkedinHomePage linkedinHomePage = linkedinLoginPage.login(userEmail, userPassword);
 
