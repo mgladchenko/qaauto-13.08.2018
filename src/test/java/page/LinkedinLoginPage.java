@@ -1,5 +1,6 @@
 package page;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,6 +33,7 @@ public class LinkedinLoginPage extends LinkedinBasePage {
     public LinkedinLoginPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        assertElementIsVisible(signInButton, 5, "Login page is not loaded.");
     }
 
     /**
@@ -46,15 +48,11 @@ public class LinkedinLoginPage extends LinkedinBasePage {
         userEmailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (getCurrentUrl().contains("/feed")) {
+
+        if (isUrlContains("/feed", 5)) {
             return (T) new LinkedinHomePage(driver);
         }
-        if (getCurrentUrl().contains("/login-submit")) {
+        if (isUrlContains("/login-submit", 5)) {
             return (T) new LinkedinLoginSubmitPage(driver);
         }
         else {
