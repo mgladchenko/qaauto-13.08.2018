@@ -7,16 +7,19 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import page.LinkedinLoginPage;
 
 public class LinkedinBaseTest {
     WebDriver driver;
     LinkedinLoginPage linkedinLoginPage;
 
-    String browserName = "chrome";
+    //String browserName = "chrome";
 
+    @Parameters("browserName")
     @BeforeMethod
-    public void beforeMethod() throws Exception {
+    public void beforeMethod(@Optional("chrome") String browserName) throws Exception {
         switch (browserName.toLowerCase()) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
