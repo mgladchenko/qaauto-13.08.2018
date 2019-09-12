@@ -1,5 +1,6 @@
 package page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,6 +19,7 @@ public class LinkedinHomePage extends LinkedinBasePage{
         PageFactory.initElements(driver, this);
     }
 
+    @Step
     public boolean isPageLoaded() {
         return getCurrentUrl().equals("https://www.linkedin.com/feed/")
                 && getCurrentTitle().contains("LinkedIn")

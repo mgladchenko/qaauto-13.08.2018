@@ -1,11 +1,15 @@
 package test;
 
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import page.*;
 
 import static java.lang.Thread.sleep;
 
+@Feature(value = "Auth")
+@Story(value = "Reset Password")
 public class LinkedinResetPasswordTest extends LinkedinBaseTest {
 
     @Test

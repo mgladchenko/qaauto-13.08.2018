@@ -1,5 +1,6 @@
 package page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,6 +45,7 @@ public class LinkedinLoginPage extends LinkedinBasePage {
      * @param <T> - generic type to return different PageObjects.
      * @return one of corresponding PageObjects LinkedinLoginPage/LinkedinHomePage/LinkedinLoginSubmitPage.
      */
+    @Step(value = "Login as user {0} with password {1}")
     public <T> T login(String userEmail, String userPassword) {
         userEmailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
@@ -70,6 +72,7 @@ public class LinkedinLoginPage extends LinkedinBasePage {
         return new LinkedinRequestPasswordResetPage(driver);
     }
 
+    @Step
     public boolean isPageLoaded() {
         return getCurrentUrl().equals("https://www.linkedin.com/")
                 && getCurrentTitle().equals("LinkedIn: Log In or Sign Up")

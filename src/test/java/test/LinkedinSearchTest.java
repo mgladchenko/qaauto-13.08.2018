@@ -1,5 +1,7 @@
 package test;
 
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -12,6 +14,8 @@ import page.LinkedinSearchPage;
 
 import java.util.List;
 
+@Feature(value = "Search")
+@Story(value = "Search Term")
 public class LinkedinSearchTest extends LinkedinBaseTest {
 
 

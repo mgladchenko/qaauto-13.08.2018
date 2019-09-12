@@ -1,12 +1,19 @@
 package test;
 
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import page.LinkedinHomePage;
 import page.LinkedinLoginSubmitPage;
 
+import static io.qameta.allure.SeverityLevel.BLOCKER;
+import static io.qameta.allure.SeverityLevel.NORMAL;
 
+@Feature(value = "Auth")
+@Story(value = "Login")
 public class LinkedinLoginTest extends LinkedinBaseTest {
 
     @DataProvider
@@ -31,6 +38,7 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
      * - Click on 'Sign in' button.
      * - Verify Home page is loaded.
      */
+    @Severity(BLOCKER)
     @Test(dataProvider = "validDataProvider")
     public void successfulLoginTest(String userEmail, String userPassword) {
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
@@ -40,6 +48,7 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
     }
 
     @Test
+    @Severity(NORMAL)
     public void emptyUserEmailAndUserPasswordTest() {
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
         linkedinLoginPage = linkedinLoginPage.login("", "");
@@ -56,6 +65,7 @@ public class LinkedinLoginTest extends LinkedinBaseTest {
     }
 
     @Test(dataProvider = "invalidDataProvider")
+    @Severity(NORMAL)
     public void negativeLoginTest(String userEmail, String userPassword, String userEmailError, String userPasswordError) {
         Assert.assertTrue(linkedinLoginPage.isPageLoaded(), "Login page is not loaded.");
         LinkedinLoginSubmitPage linkedinLoginSubmitPage = linkedinLoginPage.login(userEmail, userPassword);
